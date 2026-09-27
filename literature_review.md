@@ -1,7 +1,7 @@
 # Literature Review Trace: Evolution of Physics-Informed Machine Learning in Photovoltaic Engineering (2019–2026)
 
-> **Source Document:** [PV Physics-Informed ML Review.pdf](file:///d:/Desktop/projects/epics/PV%20Physics-Informed%20ML%20Review.pdf)  
-> **Repository Directory:** [research papers/](file:///d:/Desktop/projects/epics/research%20papers/)  
+> **Source Document:** [PV Physics-Informed ML Review.pdf](PV%20Physics-Informed%20ML%20Review.pdf)  
+> **Repository Directory:** [research papers/](research%20papers/)  
 > **Scope:** 15 Core Papers & Synthesis across 5 Chronological Phases (2019–2026)
 
 ---
@@ -27,7 +27,7 @@ The initial phase established the theoretical foundation of physics-informed sci
 ### 1. Raissi, Perdikaris, & Karniadakis (2019)
 - **Full Bibliographic Citation:** Raissi, M., Perdikaris, P., & Karniadakis, G. E. (2019). Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations. *Journal of Computational Physics*, Vol. 378, pp. 686–707.
 - **Verified DOI / Direct Publisher Link:** [https://doi.org/10.1016/j.jcp.2018.10.045](https://doi.org/10.1016/j.jcp.2018.10.045)
-- **Local Downloaded Paper:** [📄 01_Raissi_2019_Physics_Informed_Neural_Networks.pdf](file:///d:/Desktop/projects/epics/research%20papers/01_Raissi_2019_Physics_Informed_Neural_Networks.pdf)
+- **Local Downloaded Paper:** [📄 01_Raissi_2019_Physics_Informed_Neural_Networks.pdf](research%20papers/01_Raissi_2019_Physics_Informed_Neural_Networks.pdf)
 - **Core Methodology Summary:** This seminal paper introduced the foundational PINN framework for solving forward and inverse problems governed by non-linear partial differential equations. The network leverages automatic differentiation (AD) to evaluate differential operators directly within neural architectures, penalizing PDE residuals inside the composite loss function:
   $$\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{data}} + \lambda_{\text{physics}} \mathcal{L}_{\text{PDE}}$$
   This mesh-free formulation bypasses classical numerical discretization and allows simultaneous data-driven function approximation and parameter discovery.
@@ -90,7 +90,7 @@ As physics-informed models expanded into complex dynamic systems, researchers en
 ### 7. Wang, Teng, & Perdikaris (2021)
 - **Full Bibliographic Citation:** Wang, S., Teng, Y., & Perdikaris, P. (2021). Understanding and Mitigating Gradient Flow Pathologies in Physics-Informed Neural Networks. *SIAM Journal on Scientific Computing*, Vol. 43, No. 5, pp. A3055–A3081.
 - **Verified DOI / Direct Publisher Link:** [https://doi.org/10.1137/20M1318043](https://doi.org/10.1137/20M1318043)
-- **Local Downloaded Paper:** [📄 07_Wang_Teng_Perdikaris_2021_Gradient_Flow_Pathologies.pdf](file:///d:/Desktop/projects/epics/research%20papers/07_Wang_Teng_Perdikaris_2021_Gradient_Flow_Pathologies.pdf)
+- **Local Downloaded Paper:** [📄 07_Wang_Teng_Perdikaris_2021_Gradient_Flow_Pathologies.pdf](research%20papers/07_Wang_Teng_Perdikaris_2021_Gradient_Flow_Pathologies.pdf)
 - **Core Methodology Summary:** This paper identifies gradient flow pathologies in multi-objective PINN training, demonstrating that disparities in gradient norms between data and physical loss terms cause optimization instabilities. To fix this, the authors introduce a learning rate annealing algorithm that dynamically rescales loss weight coefficients ($\lambda_i$) using backpropagated gradient statistics:
   $$\hat{\lambda}_k = \frac{\max_{\theta} |\nabla_{\theta} \mathcal{L}_{\text{data}}|}{|\nabla_{\theta} \mathcal{L}_{\text{physics}, k}|}$$
   This ensures balanced gradient flow across all parameter vectors throughout gradient descent.
@@ -99,7 +99,7 @@ As physics-informed models expanded into complex dynamic systems, researchers en
 ### 8. Wang, Yu, & Perdikaris (2022)
 - **Full Bibliographic Citation:** Wang, S., Yu, X., & Perdikaris, P. (2022). When and why PINNs fail to train: A neural tangent kernel perspective. *Journal of Computational Physics*, Vol. 449, p. 110768.
 - **Verified DOI / Direct Publisher Link:** [https://doi.org/10.1016/j.jcp.2021.110768](https://doi.org/10.1016/j.jcp.2021.110768)
-- **Local Downloaded Paper:** [📄 08_Wang_Yu_Perdikaris_2022_NTK_PINNs.pdf](file:///d:/Desktop/projects/epics/research%20papers/08_Wang_Yu_Perdikaris_2022_NTK_PINNs.pdf)
+- **Local Downloaded Paper:** [📄 08_Wang_Yu_Perdikaris_2022_NTK_PINNs.pdf](research%20papers/08_Wang_Yu_Perdikaris_2022_NTK_PINNs.pdf)
 - **Core Methodology Summary:** The authors utilize Neural Tangent Kernel (NTK) theory to analyze PINN convergence dynamics in the infinite-width limit. They demonstrate that spectral bias causes neural networks to learn low-frequency targets rapidly while struggling with high-frequency physical components. The paper introduces an NTK-guided dynamic loss weighting scheme based on kernel eigenvalues:
   $$\lambda_i(t) = \frac{\text{Trace}(K(t))}{\text{Trace}(K_i(t))}$$
   This adaptation balances the convergence rates of distinct residual components.
@@ -157,10 +157,10 @@ By 2024–2026, physics-informed machine learning split into two specialized sub
 - **Full Bibliographic Citation:** Pei, M., Zhao, Y., Liu, C., et al. (2026). Photovoltaic Knowledge-Informed Neural Network (PKINN): Interpretable power prediction model under Fluctuating Environmental Conditions. *Energy and AI*, Vol. 20, p. 100499 / Article 100499.
 - **Verified Publisher Link:** [Read Paper on ScienceDirect](https://www.sciencedirect.com/science/article/pii/S2666546826000091?via%3Dihub)
 - **GitHub Code Repository:** [Photovoltaic_Knowledge_Informed_Neural_Network](https://github.com/addm9/Photovoltaic_Knowledge_Informed_Neural_Network)
-- **Empirical Notebook & Reproduction Analysis:** [PINN.ipynb](file:///d:/Desktop/projects/epics/PINN.ipynb) | [reproduction.md](file:///d:/Desktop/projects/epics/reproduction.md)
+- **Empirical Notebook & Reproduction Analysis:** [PINN.ipynb](PINN.ipynb) | [reproduction.md](reproduction.md)
 - **Core Methodology Summary:** The authors present PKINN—a knowledge-informed neural network featuring a Quadratic Explicit Model ($\mathcal{L}_{\text{QEM}}$) for single-diode circuit representation without transcendental solvers, coupled with a 3-branch Fluctuation Allocation Mechanism (FAM) for cloud ramps:
   $$\mathcal{L}_{\text{QEM}} = \frac{1}{N} \sum_{i=1}^N \left| P_i - \left( V_m I_{\text{ph}} - V_m I_0 \left[ \exp\left(\frac{V_m + I_m R_s}{n V_t}\right) - 1 \right] - \frac{V_m(V_m + I_m R_s)}{R_{\text{sh}}} \right) \right|^2$$
-- **Relevance & Literature Gap:** Serves as the primary open-source baseline. Our empirical reproduction in [reproduction.md](file:///d:/Desktop/projects/epics/reproduction.md) confirms that combining QEM loss and FAM reduces forecasting error by over 71% (dropping MAE from $16.84\text{ W}$ to $4.85\text{ W}$). However, PKINN relies on fixed default diode parameters ($R_s = 0.04\,\Omega$), assumes uniform cell temperature, and omits 12-month thermal Arrhenius aging.
+- **Relevance & Literature Gap:** Serves as the primary open-source baseline. Our empirical reproduction in [reproduction.md](reproduction.md) confirms that combining QEM loss and FAM reduces forecasting error by over 71% (dropping MAE from $16.84\text{ W}$ to $4.85\text{ W}$). However, PKINN relies on fixed default diode parameters ($R_s = 0.04\,\Omega$), assumes uniform cell temperature, and omits 12-month thermal Arrhenius aging.
 
 
 --- 

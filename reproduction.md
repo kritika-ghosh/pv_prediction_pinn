@@ -3,14 +3,14 @@
 > **Paper Reference:** Pei et al. (2026) – *Photovoltaic Knowledge-Informed Neural Network (PKINN): Interpretable power prediction model under Fluctuating Environmental Conditions*, **Energy and AI**, Elsevier.  
 > **Publisher Link:** [Read Paper on ScienceDirect](https://www.sciencedirect.com/science/article/pii/S2666546826000091?via%3Dihub)  
 > **GitHub Repository:** [Photovoltaic_Knowledge_Informed_Neural_Network](https://github.com/addm9/Photovoltaic_Knowledge_Informed_Neural_Network)  
-> **Execution Notebook:** [PINN.ipynb](file:///d:/Desktop/projects/epics/PINN.ipynb)  
+> **Execution Notebook:** [PINN.ipynb](PINN.ipynb)  
 > **Dataset Evaluated:** `xSi12922.csv` (35,861 operational samples)
 
 ---
 
 ## Executive Summary & Main Reproduction Finding
 
-We successfully implemented, patched, and executed the open-source **Photovoltaic Knowledge-Informed Neural Network (PKINN)** framework in PyTorch using the companion notebook [PINN.ipynb](file:///d:/Desktop/projects/epics/PINN.ipynb). 
+We successfully implemented, patched, and executed the open-source **Photovoltaic Knowledge-Informed Neural Network (PKINN)** framework in PyTorch using the companion notebook [PINN.ipynb](PINN.ipynb). 
 
 While the published paper reports a top-line coefficient of determination ($R^2$) reaching **0.98+** under ideal cross-validation evaluation conditions, our empirical run across the full multi-season `xSi12922.csv` dataset achieved an $R^2$ of **0.8424** ($\text{MAE} = 4.85\text{ W}$, $\text{RMSE} = 10.06\text{ W}$). 
 
@@ -22,7 +22,7 @@ Importantly, this empirical result **fully validates the two primary scientific 
 
 ## Empirical Metric Progression (Extracted from PINN.ipynb)
 
-The step-by-step performance progression across the experimental pipeline executed in [PINN.ipynb](file:///d:/Desktop/projects/epics/PINN.ipynb) is summarized below:
+The step-by-step performance progression across the experimental pipeline executed in [PINN.ipynb](PINN.ipynb) is summarized below:
 
 | Architecture / Model Configuration | Root Mean Squared Error (RMSE) | Mean Absolute Error (MAE) | Coefficient of Determination ($R^2$) | Error Reduction vs. Baseline |
 | :--- | :---: | :---: | :---: | :---: |
@@ -78,4 +78,4 @@ When presenting these reproduction results to your professor or thesis committee
 > *Our code audit identified that the remaining gap to the paper's reported $0.98\text{ }R^2$ stems from hardcoded default diode parameters ($R_s = 0.04\,\Omega, R_p = 920\,\Omega$) in the published codebase. This finding directly motivates our project's proposed 12-Month Multi-Physics Digital Twin, which replaces fixed diode parameters with dynamic inverse parameter extraction ($R_s(t)$) and thermal Arrhenius aging kinetics."*
 
 ---
-*Reproduction report generated from empirical runs in [PINN.ipynb](file:///d:/Desktop/projects/epics/PINN.ipynb).*
+*Reproduction report generated from empirical runs in [PINN.ipynb](PINN.ipynb).*

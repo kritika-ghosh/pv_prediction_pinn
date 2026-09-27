@@ -75,7 +75,7 @@ This repository implements a **Multi-Physics Informed Neural Network (PINN) Digi
 ## 🔬 Summary of Today's Studies & Experimental Benchmarks
 
 ### Study 1: PKINN Paper Reproduction & Gap Analysis
-* **Files:** [reproduction.md](file:///d:/Desktop/projects/epics/reproduction.md) | [PINN.ipynb](file:///d:/Desktop/projects/epics/PINN.ipynb)
+* **Files:** [reproduction.md](reproduction.md) | [PINN.ipynb](PINN.ipynb)
 * **Reference Paper:** Pei et al. (2026), *Photovoltaic Knowledge-Informed Neural Network (PKINN)*, [Energy and AI (Elsevier)](https://www.sciencedirect.com/science/article/pii/S2666546826000091?via%3Dihub).
 * **Dataset Evaluated:** `xSi12922.csv` (35,861 operational samples).
 
@@ -92,7 +92,7 @@ This repository implements a **Multi-Physics Informed Neural Network (PINN) Digi
 ---
 
 ### Study 2: Architectural Flaw Fixes & Physical Cascade
-* **File:** [fix_loss_function.py](file:///d:/Desktop/projects/epics/fix_loss_function.py)
+* **File:** [fix_loss_function.py](fix_loss_function.py)
 * **Objective:** Fix 4 critical flaws (Ghost Coupling, Flattened Time Horizon, $1\text{e}6$ Loss Scaler Explosions, Loss SDE Disconnect).
 
 #### Key Innovations & Discoveries:
@@ -104,13 +104,13 @@ This repository implements a **Multi-Physics Informed Neural Network (PINN) Digi
 ---
 
 ### Study 3: Single-Diode Model (SDM) PINN Benchmark
-* **File:** [single_diode_pinn.py](file:///d:/Desktop/projects/epics/single_diode_pinn.py)
+* **File:** [single_diode_pinn.py](single_diode_pinn.py)
 * **Objective:** Integrate the full 5-parameter Shockley Single-Diode Model circuit loss ($\mathcal{L}_{\text{diode}}$ / $\mathcal{L}_{\text{QEM}}$) with deep learning parameter extraction heads ($R_s, R_{\text{sh}}, n, I_0$).
 
 ---
 
 ### Study 4: 12-Month Macro Cumulative Arrhenius PINN Benchmark
-* **File:** [study_12month_pinn.py](file:///d:/Desktop/projects/epics/study_12month_pinn.py)
+* **File:** [study_12month_pinn.py](study_12month_pinn.py)
 * **Objective:** Solve the timescale mismatch between fast 5-minute weather ramps and slow 12-month thermal degradation by evaluating the discrete Riemann integral of thermal stress across 12 months:
 
 $$\Delta R_{s, \text{physical}}^{(12\text{mo})} = \sum_{i=1}^N A \cdot \exp\left( -\frac{E_a}{k_B \cdot T_{\text{cell}}(t_i)} \right) \cdot \left[1 + \gamma_{\text{rh}} \cdot RH(t_i)\right] \Delta t$$
@@ -122,7 +122,7 @@ $$\Delta R_{s, \text{physical}}^{(12\text{mo})} = \sum_{i=1}^N A \cdot \exp\left
 ---
 
 ### Study 5: Standard LSTM vs. CNN-BiLSTM-Multi-Head Attention Benchmark
-* **File:** [study_cnn_bilstm_attention_pinn.py](file:///d:/Desktop/projects/epics/study_cnn_bilstm_attention_pinn.py)
+* **File:** [study_cnn_bilstm_attention_pinn.py](study_cnn_bilstm_attention_pinn.py)
 * **Objective:** Compare Standard LSTM against a complex CNN-BiLSTM-Multi-Head Attention hybrid model.
 
 #### Why Standard LSTM Outperformed CNN-BiLSTM-Attention:
@@ -133,7 +133,7 @@ $$\Delta R_{s, \text{physical}}^{(12\text{mo})} = \sum_{i=1}^N A \cdot \exp\left
 ---
 
 ### Study 6: Single-Model vs. FAM Ensemble Benchmark
-* **File:** [study_fam_multiphysics_pinn.py](file:///d:/Desktop/projects/epics/study_fam_multiphysics_pinn.py)
+* **File:** [study_fam_multiphysics_pinn.py](study_fam_multiphysics_pinn.py)
 * **Objective:** Partition dataset into S-FEC (Stable), M-FEC (Moderate), and I-FEC (Intense cloud ramps) regimes using FAM ensemble sub-models.
 
 #### Benchmark Findings:
@@ -170,18 +170,18 @@ Here is the complete side-by-side comparison across all models and studies execu
 
 ## 📁 Repository File Map
 
-* 📄 [literature_review.md](file:///d:/Desktop/projects/epics/literature_review.md) — Comprehensive 15-paper chronological literature review trace (2019–2026).
-* 📄 [reproduction.md](file:///d:/Desktop/projects/epics/reproduction.md) — Empirical reproduction report for PKINN (Pei et al. 2026).
-* 🐍 [study_time_series.py](file:///d:/Desktop/projects/epics/study_time_series.py) — Initial baseline time-series LSTM benchmark.
-* 🐍 [fix_loss_function.py](file:///d:/Desktop/projects/epics/fix_loss_function.py) — Physical Cascade model resolving architectural flaws.
-* 🐍 [single_diode_pinn.py](file:///d:/Desktop/projects/epics/single_diode_pinn.py) — Full 5-parameter Single-Diode Model PINN.
-* 🐍 [study_12month_pinn.py](file:///d:/Desktop/projects/epics/study_12month_pinn.py) — 12-Month Macro Cumulative Arrhenius PINN benchmark.
-* 🐍 [study_cnn_bilstm_attention_pinn.py](file:///d:/Desktop/projects/epics/study_cnn_bilstm_attention_pinn.py) — CNN-BiLSTM-Multi-Head Attention PINN benchmark.
-* 🐍 [study_fam_multiphysics_pinn.py](file:///d:/Desktop/projects/epics/study_fam_multiphysics_pinn.py) — FAM Fluctuation Allocation Mechanism Ensemble PINN benchmark.
-* 📊 [xSi12922.csv](file:///d:/Desktop/projects/epics/xSi12922.csv) — Operational dataset (35,861 telemetry samples).
-* 📓 [PINN.ipynb](file:///d:/Desktop/projects/epics/PINN.ipynb) — Jupyter notebook containing PKINN model execution.
-* 📄 [PV Physics-Informed ML Review.pdf](file:///d:/Desktop/projects/epics/PV%20Physics-Informed%20ML%20Review.pdf) — Reference literature trace document.
-* ⚙️ [.gitignore](file:///d:/Desktop/projects/epics/.gitignore) — Clean repository ignore file.
+* 📄 [literature_review.md](literature_review.md) — Comprehensive 15-paper chronological literature review trace (2019–2026).
+* 📄 [reproduction.md](reproduction.md) — Empirical reproduction report for PKINN (Pei et al. 2026).
+* 🐍 [study_time_series.py](study_time_series.py) — Initial baseline time-series LSTM benchmark.
+* 🐍 [fix_loss_function.py](fix_loss_function.py) — Physical Cascade model resolving architectural flaws.
+* 🐍 [single_diode_pinn.py](single_diode_pinn.py) — Full 5-parameter Single-Diode Model PINN.
+* 🐍 [study_12month_pinn.py](study_12month_pinn.py) — 12-Month Macro Cumulative Arrhenius PINN benchmark.
+* 🐍 [study_cnn_bilstm_attention_pinn.py](study_cnn_bilstm_attention_pinn.py) — CNN-BiLSTM-Multi-Head Attention PINN benchmark.
+* 🐍 [study_fam_multiphysics_pinn.py](study_fam_multiphysics_pinn.py) — FAM Fluctuation Allocation Mechanism Ensemble PINN benchmark.
+* 📊 [xSi12922.csv](xSi12922.csv) — Operational dataset (35,861 telemetry samples).
+* 📓 [PINN.ipynb](PINN.ipynb) — Jupyter notebook containing PKINN model execution.
+* 📄 [PV Physics-Informed ML Review.pdf](PV%20Physics-Informed%20ML%20Review.pdf) — Reference literature trace document.
+* ⚙️ [.gitignore](.gitignore) — Clean repository ignore file.
 
 ---
 
