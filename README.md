@@ -46,7 +46,9 @@ This repository implements a **Multi-Physics Informed Neural Network (PINN) Digi
 > **EXPLANATION BLOCK: Single-Diode Model (SDM)**  
 > **In Simple Terms:** The fundamental mathematical equation used by electrical engineers to describe how a solar cell converts light into electricity. It models a solar panel as a current source connected to a diode, an internal series resistance ($R_s$), and a shunt resistance ($R_{\text{sh}}$). 
 > 
-> $$\text{Equation: } I = I_{\text{ph}} - I_0 \left[ \exp\left( \frac{V + I R_s}{n V_t} \right) - 1 \right] - \frac{V + I R_s}{R_{\text{sh}}}$$
+> $$
+> I = I_{\text{ph}} - I_0 \left[ \exp\left( \frac{V + I R_s}{n V_t} \right) - 1 \right] - \frac{V + I R_s}{R_{\text{sh}}}
+> $$
 
 > [!NOTE]
 > **EXPLANATION BLOCK: Arrhenius Degradation Kinetics**  
@@ -175,18 +177,43 @@ $$\Delta R_{s, \text{physical}}^{(12\text{mo})} = \sum_{i=1}^N A \cdot \exp\left
 2. **Model Hybridization (Frequency + Structural):**
    * **Hybridization A (Feature De-noising Hybrid via Wavelet DWT):** Passes physical columns through Discrete Wavelet Transform (`pywt.wavedec` with `'db4'`), separating smooth low-frequency thermodynamic approximations from high-frequency turbulence/cloud ramps before the recurrent layers.
    * **Hybridization B (Structural Neural-Analytical Circuit Hybrid):** Deletes the black-box linear power output head. The neural network acts purely as an unobservable parameter estimator:
-     - $\hat{T}_{\text{cell}}$: Junction cell temperature
-     - $\widehat{dR_s/dt}$: Real-time aging rate
-     - $\hat{n}$: Diode ideality factor ($1.0 \le n \le 2.0$ for Silicon)
-     These outputs feed directly into the hard-coded analytical circuit equation:
-     $$P_{\text{ideal}} = \text{POA} \cdot \text{Area} \cdot \eta_{\text{stc}} \cdot \left[1 + \gamma_p \cdot (\hat{T}_{\text{cell}} - 25^\circ\text{C})\right]$$
-     $$P_{\text{hybrid\_pred}} = \text{clamp}\left(\frac{P_{\text{ideal}}}{\hat{n}}, \min=0.0\right)$$
+     * **Junction Temperature** ($\hat{T}_{\text{cell}}$): Panel cell operating temperature
+     * **Aging Rate** ($\widehat{dR_s/dt}$): Real-time series resistance degradation rate
+     * **Diode Ideality** ($\hat{n}$): Ideality factor ($1.0 \le n \le 2.0$ for Silicon)
+
+     These predicted parameters feed directly into the hard-coded analytical circuit equations:
+
+     $$
+     P_{\text{ideal}} = \text{POA} \cdot \text{Area} \cdot \eta_{\text{stc}} \cdot \left[1 + \gamma_p \cdot (\hat{T}_{\text{cell}} - 25^\circ\text{C})\right]
+     $$
+
+     $$
+     P_{\text{pred}} = \operatorname{clamp}\left(\frac{P_{\text{ideal}}}{\hat{n}}, \min=0.0\right)
+     $$
 
 3. **Multi-Physics Loss Function (with SDE Circuit Loss):**
-   * $\mathcal{L}_{\text{data}}$: Ground-truth empirical target supervision ($\text{MSE}(P_{\text{hybrid\_pred}}, y)$).
-   * $\mathcal{L}_{\text{sde}}$: **Single-Diode Equation (SDE) Circuit Physics Loss** enforcing semiconductor circuit power conversion physics ($\text{MSE}(P_{\text{hybrid\_pred}}, P_{\text{ideal}}/\hat{n}) + \operatorname{ReLU}(-P_{\text{hybrid\_pred}})$).
-   * $\mathcal{L}_{\text{thermal}}$: Thermodynamic heat dissipation balance ($\frac{1}{100}\text{MSE}(\hat{T}_{\text{cell}}, T_{\text{expected}})$).
-   * $\mathcal{L}_{\text{aging}}$: Arrhenius degradation kinetics constraint ($\text{MSE}(\log(1+\widehat{dR_s/dt}), \log(1+r_{\text{arrh}}))$).
+
+   The total objective combines empirical and domain-specific physical losses:
+
+   * **Data Loss** (`loss_data`): Ground-truth empirical target supervision
+     $$
+     \mathcal{L}_{\text{data}} = \text{MSE}(P_{\text{pred}}, y)
+     $$
+
+   * **Single-Diode Circuit Loss** (`loss_sde`): Enforces semiconductor circuit power conversion physics
+     $$
+     \mathcal{L}_{\text{sde}} = \text{MSE}\left(P_{\text{pred}}, \frac{P_{\text{ideal}}}{\hat{n}}\right) + \operatorname{ReLU}(-P_{\text{pred}})
+     $$
+
+   * **Thermodynamic Loss** (`loss_thermal`): Heat dissipation balance against thermal model
+     $$
+     \mathcal{L}_{\text{thermal}} = \frac{1}{100} \text{MSE}(\hat{T}_{\text{cell}}, T_{\text{expected}})
+     $$
+
+   * **Aging Kinetics Loss** (`loss_aging`): Arrhenius degradation rate constraint
+     $$
+     \mathcal{L}_{\text{aging}} = \text{MSE}\left(\log(1 + \widehat{dR_s/dt}), \log(1 + r_{\text{arrh}})\right)
+     $$
 
 #### Empirical Benchmark Results (Study 7 — All 15 Loss Combinations):
 | Exp # | Active Loss Components | Test $R^2$ Score | MAE (W) | RMSE (W) | Physical Insight & Significance |
