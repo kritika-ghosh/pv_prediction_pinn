@@ -1,3 +1,19 @@
+
+def resolve_dataset_path(csv_name):
+    import os
+    if os.path.exists(csv_name):
+        return csv_name
+    candidates = [
+        os.path.join("datasets", csv_name),
+        os.path.join("..", csv_name),
+        os.path.join("..", "datasets", csv_name),
+        os.path.join("..", "..", "datasets", csv_name),
+    ]
+    for c in candidates:
+        if os.path.exists(c):
+            return c
+    return csv_name
+
 import itertools
 import numpy as np
 import pandas as pd

@@ -368,56 +368,84 @@ Here is the complete side-by-side comparison across all models and studies execu
 
 ## 📁 Repository File Map
 
-* 📄 [literature_review.md](literature_review.md) — Comprehensive 15-paper chronological literature review trace (2019–2026).
-* 📄 [reproduction.md](reproduction.md) — Empirical reproduction report for PKINN (Pei et al. 2026).
-* 📄 [dimensionality_reduction_and_hybridization_explained.md](dimensionality_reduction_and_hybridization_explained.md) — **Beginner-Friendly Guide: Why Dimensionality Reduction, Why Kernel PCA, Feature Selection Rationale, and Two-Stage Hybridization.**
-* 🐍 [study_time_series.py](study_time_series.py) — Initial baseline time-series LSTM benchmark.
-* 🐍 [fix_loss_function.py](fix_loss_function.py) — Physical Cascade model resolving architectural flaws.
-* 🐍 [single_diode_pinn.py](single_diode_pinn.py) — Full 5-parameter Single-Diode Model PINN.
-* 🐍 [study_12month_pinn.py](study_12month_pinn.py) — 12-Month Macro Cumulative Arrhenius PINN benchmark.
-* 🐍 [study_cnn_bilstm_attention_pinn.py](study_cnn_bilstm_attention_pinn.py) — CNN-BiLSTM-Multi-Head Attention PINN benchmark.
-* 🐍 [study_fam_multiphysics_pinn.py](study_fam_multiphysics_pinn.py) — FAM Fluctuation Allocation Mechanism Ensemble PINN benchmark.
-* 🐍 [study_hybrid_kpca_wavelet_pinn.py](study_hybrid_kpca_wavelet_pinn.py) — **Study 7: Physics-Preserving Feature Reduction (KPCA) & Hybrid Wavelet-Analytical Circuit PINN ($R^2 = 0.9718$).**
-* 🐍 [run_msi0166_cross_asset_test.py](run_msi0166_cross_asset_test.py) — **Study 8: Cross-Asset Overfitting & Generalization Benchmark on `mSi0166.csv`.**
-* 🐍 [run_xsi_train_first_csv_test.py](run_xsi_train_first_csv_test.py) — **Study 9: Cross-Asset Generalization Benchmark (Trained on `xSi12922.csv`, Tested on `first.csv`, $R^2 = 0.9009$).**
-* 🐍 [train_first_csv_hybrid_pinn.py](train_first_csv_hybrid_pinn.py) — Native Hybrid PINN training pipeline for `first.csv` commercial array.
-* 🐍 [train_eugene_xsi12922_pinn.py](train_eugene_xsi12922_pinn.py) — Cross-Site Overfitting Benchmark (Trained on `xSi12922.csv`, Tested on `Eugene_xSi12922.csv`).
-* 📊 [xSi12922.csv](xSi12922.csv) — Primary operational dataset (35,861 telemetry samples, 70W Monocrystalline module).
-* 📊 [mSi0166.csv](mSi0166.csv) — Cross-asset evaluation dataset (33,899 telemetry samples, 38W Multicrystalline module).
-* 📊 [Eugene_xSi12922.csv](Eugene_xSi12922.csv) — Eugene, Oregon solar monitoring dataset (Monocrystalline xSi12922 module).
-* 📊 [first.csv](first.csv) — 25kW Commercial PV array operational telemetry dataset (1.14M records, 2013–2024).
-* 📓 [PINN.ipynb](PINN.ipynb) — Jupyter notebook containing PKINN model execution.
-* 📄 [PV Physics-Informed ML Review.pdf](PV%20Physics-Informed%20ML%20Review.pdf) — Reference literature trace document.
-* ⚙️ [.gitignore](.gitignore) — Clean repository ignore file.
+* 📊 **[`datasets/`](datasets/)** — Centralized raw telemetry datasets directory:
+  * `xSi12922.csv` (Primary operational dataset, 35,861 samples, 70W Monocrystalline module)
+  * `mSi0166.csv` (DKASC cross-asset dataset, 33,899 samples, 38W Multicrystalline module)
+  * `Eugene_xSi12922.csv` (Eugene, Oregon cross-site solar monitoring dataset)
+  * `first.csv` (25kW Commercial PV array operational telemetry dataset, 1.14M records)
+  * `open-meteo-23.23N77.36E525m.csv` & `pinn_training_dataset.csv`
+
+* 📌 **[`Phase_0_Project_Selection/`](Phase_0_Project_Selection/)**
+  * `README.md` (Project Scoping, Problem Statement, Objectives)
+  * `epics specifications.pdf` & `project_phases.pdf`
+
+* 📚 **[`Phase_1_Research/`](Phase_1_Research/)**
+  * `README.md` (Literature Survey, Papers, Gap Analysis)
+  * `literature_review.md`, `reproduction.md`, `review_one.md`, `PV Physics-Informed ML Review.pdf`
+
+* 🔬 **[`Phase_2_Theoretical_Foundations/`](Phase_2_Theoretical_Foundations/)**
+  * `README.md` (Semiconductor Physics, SDM Circuit Model, PINN Rationale)
+  * `PINN.ipynb` (Symbolic Physics Exploration Notebook)
+
+* 📐 **[`Phase_3_Mathematical_Formulations/`](Phase_3_Mathematical_Formulations/)**
+  * `README.md` (QEM Explicit Model & 4-Component Multi-Physics Loss Derivations)
+  * `fix_loss_function.py`, `single_diode_pinn.py`, `pinn_digital_twin_results.png`
+
+* 🛠️ **[`Phase_4_Baseline_Modeling_Troubleshooting/`](Phase_4_Baseline_Modeling_Troubleshooting/)**
+  * `README.md` (MLP Baseline, Constant Temp Misdiagnosis, pvlib Synthetic Attempt & Discard)
+  * `study_time_series.py`, `dataset_generation.py`, `study.py`, `train.py`
+
+* ⏳ **[`Phase_5_Temporal_Modeling_LSTM/`](Phase_5_Temporal_Modeling_LSTM/)**
+  * `README.md` (Tabular MLP Limitations, Sliding Sequence Windows, 12-Month Riemann Sum)
+  * `study_12month_pinn.py`
+
+* ⚡ **[`Phase_6_MultiLoss_Optimization_Challenges/`](Phase_6_MultiLoss_Optimization_Challenges/)**
+  * `README.md` (Loss Timescale Conflict, PCGrad, Decoupled Strategy)
+  * `study_cnn_bilstm_attention_pinn.py`, `study_adaptive_weights.py`
+
+* 🔗 **[`Phase_7_Loss_Function_Interdependence/`](Phase_7_Loss_Function_Interdependence/)**
+  * `README.md` (Mutual Variable Interdependence Coupling)
+
+* 🌤️ **[`Phase_8_Regime_Specialization_FAM/`](Phase_8_Regime_Specialization_FAM/)**
+  * `README.md` (Bi-LSTM Failure Analysis & FAM Ensemble Routing)
+  * `study_fam_multiphysics_pinn.py`
+
+* 🧠 **[`Phase_9_Dimensionality_Reduction_KPCA/`](Phase_9_Dimensionality_Reduction_KPCA/)**
+  * `README.md` (Physics-Preserving Split, RBF Kernel PCA Compression)
+  * `dimensionality_reduction_and_hybridization_explained.md`
+
+* 🚀 **[`Phase_10_Hybridization_CrossDataset_Evaluation/`](Phase_10_Hybridization_CrossDataset_Evaluation/)**
+  * `README.md` (Wavelet DWT De-noising, Analytical Circuit Solver, Benchmark Results)
+  * `study_hybrid_kpca_wavelet_pinn.py`, `run_msi0166_cross_asset_test.py`, `run_xsi_train_first_csv_test.py`, `train_first_csv_hybrid_pinn.py`, `train_eugene_xsi12922_pinn.py`, `run_msi0166_experiments.py`
 
 ---
 
 ## ⚡ How to Run the Code
 
-To execute any of the benchmark studies, run the desired Python script using Python 3.12+:
+To execute any of the phase pipeline scripts, run the python file directly from root or from within its Phase folder using Python 3.12+:
 
 ```bash
-# 1. Run the 12-Month Macro Arrhenius Multi-Physics PINN Study
-python study_12month_pinn.py
+# 1. Run Phase 3 Single-Diode Model PINN Study
+python Phase_3_Mathematical_Formulations/single_diode_pinn.py
 
-# 2. Run the Standard LSTM vs. CNN-BiLSTM-Attention Benchmark
-python study_cnn_bilstm_attention_pinn.py
+# 2. Run Phase 5 12-Month Macro Arrhenius Multi-Physics PINN Study
+python Phase_5_Temporal_Modeling_LSTM/study_12month_pinn.py
 
-# 3. Run the FAM Fluctuation Allocation Mechanism Ensemble Benchmark
-python study_fam_multiphysics_pinn.py
+# 3. Run Phase 6 Standard LSTM vs. CNN-BiLSTM-Attention Benchmark
+python Phase_6_MultiLoss_Optimization_Challenges/study_cnn_bilstm_attention_pinn.py
 
-# 4. Run Study 7: Feature Reduction (KPCA) + Wavelet-Analytical Circuit Hybrid (R² = 0.9718)
-python study_hybrid_kpca_wavelet_pinn.py
+# 4. Run Phase 8 FAM Fluctuation Allocation Mechanism Ensemble Benchmark
+python Phase_8_Regime_Specialization_FAM/study_fam_multiphysics_pinn.py
 
-# 5. Run Study 8: Cross-Asset Overfitting & Transfer Benchmark on mSi0166
-python run_msi0166_cross_asset_test.py
+# 5. Run Phase 10 Study 7: Feature Reduction (KPCA) + Wavelet-Analytical Circuit Hybrid (R² = 0.9718)
+python Phase_10_Hybridization_CrossDataset_Evaluation/study_hybrid_kpca_wavelet_pinn.py
 
-# 6. Run Study 9: Cross-Asset Generalization (Trained on xSi12922, Tested on first.csv)
-python run_xsi_train_first_csv_test.py
+# 6. Run Phase 10 Study 8: Cross-Asset Overfitting & Transfer Benchmark on mSi0166
+python Phase_10_Hybridization_CrossDataset_Evaluation/run_msi0166_cross_asset_test.py
 
-# 7. Run Native Hybrid PINN Training Directly on first.csv (25kW Array)
-python train_first_csv_hybrid_pinn.py
+# 7. Run Phase 10 Study 9: Cross-Asset Generalization (Trained on xSi12922, Tested on first.csv)
+python Phase_10_Hybridization_CrossDataset_Evaluation/run_xsi_train_first_csv_test.py
 
-# 8. Run Cross-Site Overfitting Benchmark (Trained on xSi12922, Tested on Eugene)
-python train_eugene_xsi12922_pinn.py
+# 8. Run Native Hybrid PINN Training Directly on first.csv (25kW Array)
+python Phase_10_Hybridization_CrossDataset_Evaluation/train_first_csv_hybrid_pinn.py
 ```

@@ -1,10 +1,17 @@
 
 def resolve_dataset_path(csv_name):
+    import os
     if os.path.exists(csv_name):
         return csv_name
-    parent_path = os.path.join("..", csv_name)
-    if os.path.exists(parent_path):
-        return parent_path
+    candidates = [
+        os.path.join("datasets", csv_name),
+        os.path.join("..", csv_name),
+        os.path.join("..", "datasets", csv_name),
+        os.path.join("..", "..", "datasets", csv_name),
+    ]
+    for c in candidates:
+        if os.path.exists(c):
+            return c
     return csv_name
 
 """Study 7: Physics-Preserving Feature Reduction (Kernel PCA) & Model Hybridization
