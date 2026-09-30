@@ -37,6 +37,24 @@ This repository implements a **Multi-Physics Informed Neural Network (PINN) Digi
 
 ---
 
+## 📂 Project Phase Structure (`project_phases.pdf` Roadmap)
+
+This repository is structured into 10+ sequential phase folders following [`project_phases.pdf`](project_phases.pdf):
+
+* 📌 **[Phase 0 — Project Selection & Problem Formulation](Phase_0_Project_Selection/)** — Scoping, problem statement, and technical objectives.
+* 📚 **[Phase 1 — Research & Literature Survey](Phase_1_Research/)** — Literature review, existing systems, paper traces, and research gap identification.
+* 🔬 **[Phase 2 — Theoretical Foundations & Core Concepts](Phase_2_Theoretical_Foundations/)** — Solid-state semiconductor physics, SDM circuit theory, and PINN rationale.
+* 📐 **[Phase 3 — Research & Mathematical Formulations](Phase_3_Mathematical_Formulations/)** — QEM formulation and 4-component composite multi-physics loss derivations.
+* 🛠️ **[Phase 4 — Baseline Modeling & Troubleshooting](Phase_4_Baseline_Modeling_Troubleshooting/)** — Baseline MLP, constant temp hypothesis, `pvlib` synthetic attempt, and XS1/DKASC re-validation.
+* ⏳ **[Phase 5 — Refining Architecture & Temporal Modeling (LSTM)](Phase_5_Temporal_Modeling_LSTM/)** — Tabular MLP limitations, sliding window LSTMs, and 12-month Riemann integrals.
+* ⚡ **[Phase 6 — Multi-Loss Optimization Challenges](Phase_6_MultiLoss_Optimization_Challenges/)** — Loss timescale conflict, initial performance collapse ($R^2 = -0.041$), PCGrad ($R^2 = 0.42$), and Decoupled 12-Month Arrhenius strategy ($R^2 = 0.81$).
+* 🔗 **[Phase 7 — Loss Function Interdependence](Phase_7_Loss_Function_Interdependence/)** — Mutual variable interdependence coupling $T_{\text{cell}}$, $R_s$, and ideality factor $n$ ($R^2 = 0.79$).
+* 🌤️ **[Phase 8 — Weather Regime Specialization (FAM)](Phase_8_Regime_Specialization_FAM/)** — Bi-LSTM failure (temporal causality leakage) and FAM ensemble routing (S-FEC, M-FEC, I-FEC).
+* 🧠 **[Phase 9 — Dimensionality Reduction & Efficiency (KPCA)](Phase_9_Dimensionality_Reduction_KPCA/)** — Physics-Preserving Feature Split, RBF Kernel PCA compression of auxiliary features (5 $\to$ 1 latent vector).
+* 🚀 **[Phase 10 — Hybridization (DWT + LSTM) & Cross-Dataset Evaluation](Phase_10_Hybridization_CrossDataset_Evaluation/)** — Wavelet DWT `'db4'` signal de-noising, analytical circuit solver, peak performance ($R^2 = 0.9718$), and zero-shot cross-asset transfer ($R^2 = 0.9009$ on 25kW array).
+
+---
+
 ## 📖 Easy-to-Understand Technical Glossary (Explanation Blocks)
 
 > [!NOTE]
