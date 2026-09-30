@@ -186,23 +186,27 @@ These predicted parameters feed directly into the hard-coded analytical circuit 
 
 $$P_{\text{ideal}} = \text{POA} \cdot \text{Area} \cdot \eta_{\text{stc}} \cdot \left[1 + \gamma_p \cdot (\hat{T}_{\text{cell}} - 25^\circ\text{C})\right]$$
 
-$$P_{\text{pred}} = \operatorname{clamp}\left(\frac{P_{\text{ideal}}}{\hat{n}}, \min=0.0\right)$$
+$$P_{\text{pred}} = \text{clamp}\left(\frac{P_{\text{ideal}}}{\hat{n}},\ \min=0.0\right)$$
 
 3. **Multi-Physics Loss Function (with SDE Circuit Loss):**
 
 The total objective combines empirical and domain-specific physical losses:
 
 * **Data Loss (`loss_data`):** Ground-truth empirical target supervision
-$$\mathcal{L}_{\text{data}} = \operatorname{MSE}(P_{\text{pred}}, y)$$
+
+$$\mathcal{L}_{\text{data}} = \text{MSE}(P_{\text{pred}},\ y)$$
 
 * **Single-Diode Circuit Loss (`loss_sde`):** Enforces semiconductor circuit power conversion physics
-$$\mathcal{L}_{\text{sde}} = \operatorname{MSE}\left(P_{\text{pred}}, \frac{P_{\text{ideal}}}{\hat{n}}\right) + \operatorname{ReLU}(-P_{\text{pred}})$$
+
+$$\mathcal{L}_{\text{sde}} = \text{MSE}\!\left(P_{\text{pred}},\ \frac{P_{\text{ideal}}}{\hat{n}}\right) + \text{ReLU}(-P_{\text{pred}})$$
 
 * **Thermodynamic Loss (`loss_thermal`):** Heat dissipation balance against thermal model
-$$\mathcal{L}_{\text{thermal}} = \frac{1}{100} \operatorname{MSE}(\hat{T}_{\text{cell}}, T_{\text{expected}})$$
+
+$$\mathcal{L}_{\text{thermal}} = \frac{1}{100}\,\text{MSE}(\hat{T}_{\text{cell}},\ T_{\text{expected}})$$
 
 * **Aging Kinetics Loss (`loss_aging`):** Arrhenius degradation rate constraint
-$$\mathcal{L}_{\text{aging}} = \operatorname{MSE}\left(\log(1 + \widehat{dR_s/dt}), \log(1 + r_{\text{arrh}})\right)$$
+
+$$\mathcal{L}_{\text{aging}} = \text{MSE}\!\left(\log(1 + \widehat{dR_s/dt}),\ \log(1 + r_{\text{arrh}})\right)$$
 
 #### Empirical Benchmark Results (Study 7 — All 15 Loss Combinations):
 | Exp # | Active Loss Components | Test R² Score | MAE (W) | RMSE (W) | Physical Insight & Significance |
@@ -259,10 +263,10 @@ $$\mathcal{L}_{\text{aging}} = \operatorname{MSE}\left(\log(1 + \widehat{dR_s/dt
 
 The model is **NOT overfitting**. The discrepancy between $0.97$ on `xSi12922` and $\sim 0.79$ on `mSi0166` is governed by three rigorous mathematical and semiconductor physics realities:
 
-1. **The Mathematical R² Denominator Effect ($\operatorname{Var}(y) = 211.2$ vs $634.4$):**
-   * Formula: $R^2 = 1 - \frac{\operatorname{MSE}}{\operatorname{Var}(y)}$
-   * `xSi12922` is a 70W monocrystalline panel with target variance $\operatorname{Var}(y) = \mathbf{634.4}$.
-   * `mSi0166` is a 38W multicrystalline panel with target variance $\operatorname{Var}(y) = \mathbf{211.2}$ ($3\times$ smaller!).
+1. **The Mathematical R² Denominator Effect ($\text{Var}(y) = 211.2$ vs $634.4$):**
+   * Formula: $R^2 = 1 - \frac{\text{MSE}}{\text{Var}(y)}$
+   * `xSi12922` is a 70W monocrystalline panel with target variance $\text{Var}(y) = \mathbf{634.4}$.
+   * `mSi0166` is a 38W multicrystalline panel with target variance $\text{Var}(y) = \mathbf{211.2}$ ($3\times$ smaller!).
    * Because the denominator is $3\times$ smaller, **every single watt of residual error penalizes R² three times more heavily** on `mSi0166`.
    * **In terms of absolute error, the model is remarkably accurate:** $\text{MAE} = \mathbf{2.85\text{ W}}$ on `mSi0166` vs $\mathbf{2.91\text{ W}}$ on `xSi12922`! The model predicts within $<3$ Watts on both panels.
 
