@@ -45,11 +45,9 @@ This repository implements a **Multi-Physics Informed Neural Network (PINN) Digi
 
 > [!NOTE]
 > **EXPLANATION BLOCK: Single-Diode Model (SDM)**  
-> **In Simple Terms:** The fundamental mathematical equation used by electrical engineers to describe how a solar cell converts light into electricity. It models a solar panel as a current source connected to a diode, an internal series resistance ($R_s$), and a shunt resistance ($R_{\text{sh}}$). 
+> **In Simple Terms:** The fundamental mathematical equation used by electrical engineers to describe how a solar cell converts light into electricity. It models a solar panel as a current source connected to a diode, an internal series resistance ($R_s$), and a shunt resistance ($R_{\text{sh}}$):
 > 
-> ```math
-> I = I_{\text{ph}} - I_0 \left[ \exp\left( \frac{V + I R_s}{n V_t} \right) - 1 \right] - \frac{V + I R_s}{R_{\text{sh}}}
-> ```
+> $$I = I_{\text{ph}} - I_0 \left[ \exp\left( \frac{V + I R_s}{n V_t} \right) - 1 \right] - \frac{V + I R_s}{R_{\text{sh}}}$$
 
 > [!NOTE]
 > **EXPLANATION BLOCK: Arrhenius Degradation Kinetics**  
@@ -61,11 +59,7 @@ This repository implements a **Multi-Physics Informed Neural Network (PINN) Digi
 
 > [!NOTE]
 > **EXPLANATION BLOCK: Ghost Coupling Problem**  
-> **In Simple Terms:** A structural coding flaw where a neural network predicts power ($P$) from one output layer, and predicts degradation ($D$) from a completely separate output layer, but the two layers never talk to each other. The model can predict high degradation, but its power prediction will completely ignore it because there is no code linking them together. We solved this by building a **Physical Cascade** where degradation structurally forces power down:
-> 
-> ```math
-> P_{\text{physical}} = (1 - D) \cdot P_{\text{ideal}}
-> ```
+> **In Simple Terms:** A structural coding flaw where a neural network predicts power ($P$) from one output layer, and predicts degradation ($D$) from a completely separate output layer, but the two layers never talk to each other. The model can predict high degradation, but its power prediction will completely ignore it because there is no code linking them together. We solved this by building a **Physical Cascade** where degradation structurally forces power down: $P_{\text{physical}} = (1 - D) \cdot P_{\text{ideal}}$.
 
 > [!NOTE]
 > **EXPLANATION BLOCK: Fluctuation Allocation Mechanism (FAM/FEC)**  
@@ -134,9 +128,9 @@ This repository implements a **Multi-Physics Informed Neural Network (PINN) Digi
 * **File:** [study_12month_pinn.py](study_12month_pinn.py)
 * **Objective:** Solve the timescale mismatch between fast 5-minute weather ramps and slow 12-month thermal degradation by evaluating the discrete Riemann integral of thermal stress across 12 months:
 
-```math
+$$
 \Delta R_{s, \text{physical}}^{(12\text{mo})} = \sum_{i=1}^N A \cdot \exp\left( -\frac{E_a}{k_B \cdot T_{\text{cell}}(t_i)} \right) \cdot \left[1 + \gamma_{\text{rh}} \cdot RH(t_i)\right] \Delta t
-```
+$$
 
 #### Major Zero-Shot Breakthrough:
 * **Exp 14 (`diode + thermal + arrhenius_12mo`):** Achieved **Zero-Shot $R^2 = 0.7921$ without showing a single target power label $y$ to the network during training!**
@@ -188,39 +182,27 @@ This repository implements a **Multi-Physics Informed Neural Network (PINN) Digi
      * **Aging Rate** ($\widehat{dR_s/dt}$): Real-time series resistance degradation rate
      * **Diode Ideality** ($\hat{n}$): Ideality factor ($1.0 \le n \le 2.0$ for Silicon)
 
-     These predicted parameters feed directly into the hard-coded analytical circuit equations:
+These predicted parameters feed directly into the hard-coded analytical circuit equations:
 
-     ```math
-     P_{\text{ideal}} = \text{POA} \cdot \text{Area} \cdot \eta_{\text{stc}} \cdot \left[1 + \gamma_p \cdot (\hat{T}_{\text{cell}} - 25^\circ\text{C})\right]
-     ```
+$$P_{\text{ideal}} = \text{POA} \cdot \text{Area} \cdot \eta_{\text{stc}} \cdot \left[1 + \gamma_p \cdot (\hat{T}_{\text{cell}} - 25^\circ\text{C})\right]$$
 
-     ```math
-     P_{\text{pred}} = \operatorname{clamp}\left(\frac{P_{\text{ideal}}}{\hat{n}}, \min=0.0\right)
-     ```
+$$P_{\text{pred}} = \operatorname{clamp}\left(\frac{P_{\text{ideal}}}{\hat{n}}, \min=0.0\right)$$
 
 3. **Multi-Physics Loss Function (with SDE Circuit Loss):**
 
-   The total objective combines empirical and domain-specific physical losses:
+The total objective combines empirical and domain-specific physical losses:
 
-   * **Data Loss** (`loss_data`): Ground-truth empirical target supervision
-     ```math
-     \mathcal{L}_{\text{data}} = \operatorname{MSE}(P_{\text{pred}}, y)
-     ```
+* **Data Loss (`loss_data`):** Ground-truth empirical target supervision
+$$\mathcal{L}_{\text{data}} = \operatorname{MSE}(P_{\text{pred}}, y)$$
 
-   * **Single-Diode Circuit Loss** (`loss_sde`): Enforces semiconductor circuit power conversion physics
-     ```math
-     \mathcal{L}_{\text{sde}} = \operatorname{MSE}\left(P_{\text{pred}}, \frac{P_{\text{ideal}}}{\hat{n}}\right) + \operatorname{ReLU}(-P_{\text{pred}})
-     ```
+* **Single-Diode Circuit Loss (`loss_sde`):** Enforces semiconductor circuit power conversion physics
+$$\mathcal{L}_{\text{sde}} = \operatorname{MSE}\left(P_{\text{pred}}, \frac{P_{\text{ideal}}}{\hat{n}}\right) + \operatorname{ReLU}(-P_{\text{pred}})$$
 
-   * **Thermodynamic Loss** (`loss_thermal`): Heat dissipation balance against thermal model
-     ```math
-     \mathcal{L}_{\text{thermal}} = \frac{1}{100} \operatorname{MSE}(\hat{T}_{\text{cell}}, T_{\text{expected}})
-     ```
+* **Thermodynamic Loss (`loss_thermal`):** Heat dissipation balance against thermal model
+$$\mathcal{L}_{\text{thermal}} = \frac{1}{100} \operatorname{MSE}(\hat{T}_{\text{cell}}, T_{\text{expected}})$$
 
-   * **Aging Kinetics Loss** (`loss_aging`): Arrhenius degradation rate constraint
-     ```math
-     \mathcal{L}_{\text{aging}} = \operatorname{MSE}\left(\log(1 + \widehat{dR_s/dt}), \log(1 + r_{\text{arrh}})\right)
-     ```
+* **Aging Kinetics Loss (`loss_aging`):** Arrhenius degradation rate constraint
+$$\mathcal{L}_{\text{aging}} = \operatorname{MSE}\left(\log(1 + \widehat{dR_s/dt}), \log(1 + r_{\text{arrh}})\right)$$
 
 #### Empirical Benchmark Results (Study 7 — All 15 Loss Combinations):
 | Exp # | Active Loss Components | Test R² Score | MAE (W) | RMSE (W) | Physical Insight & Significance |
@@ -278,10 +260,7 @@ This repository implements a **Multi-Physics Informed Neural Network (PINN) Digi
 The model is **NOT overfitting**. The discrepancy between $0.97$ on `xSi12922` and $\sim 0.79$ on `mSi0166` is governed by three rigorous mathematical and semiconductor physics realities:
 
 1. **The Mathematical R² Denominator Effect ($\operatorname{Var}(y) = 211.2$ vs $634.4$):**
-   * Formula:
-     ```math
-     R^2 = 1 - \frac{\operatorname{MSE}}{\operatorname{Var}(y)}
-     ```
+   * Formula: $R^2 = 1 - \frac{\operatorname{MSE}}{\operatorname{Var}(y)}$
    * `xSi12922` is a 70W monocrystalline panel with target variance $\operatorname{Var}(y) = \mathbf{634.4}$.
    * `mSi0166` is a 38W multicrystalline panel with target variance $\operatorname{Var}(y) = \mathbf{211.2}$ ($3\times$ smaller!).
    * Because the denominator is $3\times$ smaller, **every single watt of residual error penalizes R² three times more heavily** on `mSi0166`.
