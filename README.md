@@ -4,7 +4,7 @@
 
 ---
 
-## 📚 Table of Contents
+## 📚 Table of Content
 1. [Executive Summary](#executive-summary)
 2. [Easy-to-Understand Technical Glossary](#easy-to-understand-technical-glossary-explanation-blocks)
 3. [Summary of Studies & Experimental Benchmarks](#summary-of-studies--experimental-benchmarks)
