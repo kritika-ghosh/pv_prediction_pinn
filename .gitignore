@@ -30,3 +30,6 @@ scratch/
 # Research papers directory & downloaded PDFs
 research papers/
 *.pdf
+
+# Large datasets exceeding GitHub 100MB limit
+first.csv
